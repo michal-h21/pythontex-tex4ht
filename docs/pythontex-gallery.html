@@ -1,0 +1,505 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head> <title>PythonTeX Gallery</title> 
+<meta charset='utf-8' /> 
+<meta name='generator' content='TeX4ht (https://tug.org/tex4ht/)' /> 
+<meta name='viewport' content='width=device-width,initial-scale=1' /> 
+<link type='text/css' rel='stylesheet' href='pythontex-gallery.css' /> 
+<meta name='src' content='pythontex-gallery.tex' /> 
+ <script type='text/javascript' id='MathJax-script' src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/mml-chtml.js' async='async'></script>  
+</head><body>
+<div class='maketitle'>
+                                                                                         
+                                                                                         
+                                                                                         
+                                                                                         
+
+<h2 class='titleHead'>PythonTeX Gallery</h2>
+<div class='author'><span class='ec-lmr-12'>Geoffrey M. Poore</span></div><br />
+<div class='date'><span class='ec-lmr-12'>July 3, 2020</span></div>
+</div>   
+<div class='abstract'>
+<div class='center'>
+<!-- l. 52 --><p class='noindent'>
+</p><!-- l. 52 --><p class='noindent'><span class='ec-lmbx-10'>Abstract</span></p></div>
+<!-- l. 53 --><p class='indent'>   <span class='ec-lmr-10'>PythonTeX allows you to run Python code from within LaTeX documents and automatically
+</span><span class='ec-lmr-10'>include the output. This document serves as an example of what is possible with PythonTeX.</span><span class='footnote-mark'><a id='fn1x0-bk' href='#fn1x0'><sup class='textsuperscript'>∗</sup></a></span><a id='x1-112f1'></a>
+</p>
+</div>   
+<h3 class='sectionHead'><span class='titlemark'>1   </span> <a id='x1-10001'></a>General Python interaction</h3>
+<!-- l. 60 --><p class='noindent'>We can typeset code that is passed to Python, and bring back the results.
+</p><!-- l. 62 --><p class='indent'>   This can be simple. For example, <code>  <span id='textcolor1'>print</span>(<span id='textcolor2'>'</span><span id='textcolor3'>Python says hi!</span><span id='textcolor4'>'</span>)</code>
+returns the following:
+</p>     
+<div class='quote'>
+<!-- l. 1 --><p class='noindent'>Python says hi!</p></div>
+<!-- l. 67 --><p class='indent'>   Or we could access the printed content verbatim (it might contain special characters):
+</p>     
+<div class='quote'>
+
+<div class='BVerbatimInput'>     
+<span class='ec-lmtt-10x-x-109'>Python says hi!</span>
+</div>
+</div>
+                                                                                         
+                                                                                         
+<!-- l. 72 --><p class='indent'>   Python interaction can also be more complex.
+<code> <span id='textcolor5'>print</span>(<span id='textcolor6'>str</span>(<span id='textcolor7'>2</span><span id='textcolor8'>*</span><span id='textcolor9'>*</span><span id='textcolor10'>2</span><span id='textcolor11'>*</span><span id='textcolor12'>*</span><span id='textcolor13'>2</span>) <span id='textcolor14'>+</span> <span id='textcolor15'>r</span><span id='textcolor16'>'</span><span id='textcolor17'>\</span><span id='textcolor18'>endinput</span><span id='textcolor19'>'</span>)</code> returns
+16. In this case, the printed result includes LaTeX code, which is correctly interpreted by LaTeX to
+ensure that there is not an extra space after the 16. Printed output is saved to a file and brought back in
+via <span class='obeylines-h'><span class='verb'><span class='ec-lmtt-10x-x-109'>\input</span></span></span>, and the <span class='obeylines-h'><span class='verb'><span class='ec-lmtt-10x-x-109'>\endinput</span></span></span> command stops input immediately, before LaTeX gets to the end of the
+line and inserts a space character there, after the 16.
+</p><!-- l. 74 --><p class='indent'>   Printing works, but as the last example demonstrates, you have to be careful about spacing if you have
+text immediately after the printed content. In that case, it’s usually best to assemble text within a
+PythonTeX environment and store the text in a variable. Then you can bring in the text later, using the
+<code> <span id='textcolor20'><strong>\py</strong></span></code> command.
+The <code>  <span id='textcolor21'><strong>\py</strong></span></code>
+command brings in a string representation of its argument. First we create the text.   <span class='obeylines-h'></span>
+</p>   
+<div class='fancyvrb' id='fancyvrb1'><a id='x1-1008r1'></a>mytext <span id='textcolor22'>=</span> <span id='textcolor23'>'</span><span id='textcolor24'>$1 + 1 = </span><span id='textcolor25'><strong>{0}</strong></span><span id='textcolor26'>$</span><span id='textcolor27'>'</span><span id='textcolor28'>.</span>format(<span id='textcolor29'>1</span> <span id='textcolor30'>+</span> <span id='textcolor31'>1</span>)</div>
+<!-- l. 78 --><p class='noindent'>Then we bring it in: <code><!-- l. 1 --><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mn>1</mn> <mo class='MathClass-bin'>+</mo> <mn>1</mn> <mo class='MathClass-rel'>=</mo> <mn>2</mn></math></code>.
+The <code>  <span id='textcolor32'><strong>\py</strong></span></code>
+command can even bring in verbatim content.
+</p><!-- l. 80 --><p class='indent'>   We don’t have to typeset the code we’re executing. It can be hidden.<code></code> And then we can access it later:
+<code><strong>This is a message from Python</strong></code>.
+</p><!-- l. 82 --><p class='indent'>   It is also possible to perform variable substitution or string interpolation. The earlier result could be
+recreated: <code><!-- l. 1 --><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mn>1</mn> <mo class='MathClass-bin'>+</mo> <mn>1</mn> <mo class='MathClass-rel'>=</mo> <mn>2</mn></math></code>.
+</p><!-- l. 85 --><p class='noindent'>
+</p>   
+<h3 class='sectionHead'><span class='titlemark'>2   </span> <a id='x1-20002'></a>Pygments highlighting</h3>
+<!-- l. 87 --><p class='noindent'>PythonTeX supports syntax highlighting via Pygments. Any language supported by Pygments can be
+highlighted. Unicode is supported. Consider this snippet copied and pasted from a Python 3 interactive
+session. (Using random strings of Unicode for variable names is probably not a good idea, but
+PythonTeX will happily highlight it for you.)
+</p>   
+<div class='obeylines-v'></div><p><span class='obeylines-h'></span></p>
+<div class='fancyvrb' id='fancyvrb2'><a id='x1-2006r1'></a><span id='textcolor33'><strong>»&gt; </strong></span>âæéöø <span id='textcolor34'>=</span> <span id='textcolor35'>123</span><a id='x1-2008r2'></a><span id='textcolor36'><strong>»&gt; </strong></span>ßçñðŠ <span id='textcolor37'>=</span> <span id='textcolor38'>456</span><br class='fancyvrb' /><a id='x1-2010r3'></a><span id='textcolor39'><strong>»&gt; </strong></span>âæéöø <span id='textcolor40'>+</span> ßçñðŠ<br class='fancyvrb' /><a id='x1-2012r4'></a><span id='textcolor41'>579</span></div>
+<!-- l. 96 --><p class='indent'>   There is also a Pygments command for inline use:
+<code> <span id='textcolor42'><strong>\pygment</strong></span></code>.
+</p><!-- l. 99 --><p class='noindent'>
+</p>   
+<h3 class='sectionHead'><span class='titlemark'>3   </span> <a id='x1-30003'></a>Python console environment</h3>
+                                                                                         
+                                                                                         
+<!-- l. 101 --><p class='noindent'>PythonTeX includes an environment that emulates a Python interactive session. Commands are entered
+within the environment, each line is treated as input to an interactive session, and the result is
+typeset.
+</p>   
+<div class='obeylines-v'></div><p><span class='obeylines-h'></span></p>
+<div class='fancyvrb' id='fancyvrb3'><a id='x1-3011r1'></a><span id='textcolor43'><strong>»&gt; </strong></span>x <span id='textcolor44'>=</span> <span id='textcolor45'>123</span><a id='x1-3013r2'></a><span id='textcolor46'><strong>»&gt; </strong></span>y <span id='textcolor47'>=</span> <span id='textcolor48'>345</span><br class='fancyvrb' /><a id='x1-3015r3'></a><span id='textcolor49'><strong>»&gt; </strong></span>z <span id='textcolor50'>=</span> x <span id='textcolor51'>+</span> y<br class='fancyvrb' /><a id='x1-3017r4'></a><span id='textcolor52'><strong>»&gt; </strong></span>z<br class='fancyvrb' /><a id='x1-3019r5'></a><span id='textcolor53'>468</span><br class='fancyvrb' /><a id='x1-3021r6'></a><span id='textcolor54'><strong>»&gt; </strong></span><span id='textcolor55'><strong>def</strong></span> <span id='textcolor56'>f</span>(expr):<br class='fancyvrb' /><a id='x1-3023r7'></a><span id='textcolor57'><strong>... </strong></span>    <span id='textcolor58'><strong>return</strong></span>(expr<span id='textcolor59'>*</span><span id='textcolor60'>*</span><span id='textcolor61'>4</span>)<br class='fancyvrb' /><a id='x1-3025r8'></a><span id='textcolor62'><strong>... </strong></span><br class='fancyvrb' /><a id='x1-3027r9'></a><span id='textcolor63'><strong>»&gt; </strong></span>f(x)
+<br class='fancyvrb' /><a id='x1-3029r10'></a><span id='textcolor64'>228886641</span>
+<br class='fancyvrb' /><a id='x1-3031r11'></a><span id='textcolor65'><strong>»&gt; </strong></span><span id='textcolor66'>print</span>(<span id='textcolor67'>'</span><span id='textcolor68'>Python says hi from the console!</span><span id='textcolor69'>'</span>)
+<br class='fancyvrb' /><a id='x1-3033r12'></a><span id='textcolor70'>Python says hi from the console!</span>
+</div>
+<!-- l. 115 --><p class='indent'>   It is possible to refer to the values of console variables later on in inline contexts, using the
+<code> <span id='textcolor71'><strong>\pycon</strong></span></code> command. For
+example, the value of <!-- l. 115 --><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>z</mi></math>
+was <code>  <span id='textcolor72'>468</span></code>.
+</p><!-- l. 118 --><p class='noindent'>
+</p>   
+<h3 class='sectionHead'><span class='titlemark'>4   </span> <a id='x1-40004'></a>Basic SymPy interaction</h3>
+<!-- l. 120 --><p class='noindent'>PythonTeX allows us to perform algebraic manipulations with SymPy and then properly typeset the
+results.
+</p><!-- l. 122 --><p class='indent'>   We create three variables, and define <!-- l. 122 --><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>z</mi></math>
+in terms of the other two.
+</p>   
+<div class='obeylines-v'></div><p><span class='obeylines-h'></span></p>
+<div class='fancyvrb' id='fancyvrb4'><a id='x1-4004r1'></a>var(<span id='textcolor73'>'</span><span id='textcolor74'>x, y, z</span><span id='textcolor75'>'</span>)<a id='x1-4006r2'></a>z <span id='textcolor76'>=</span> x <span id='textcolor77'>+</span> y</div>
+<!-- l. 129 --><p class='indent'>   Now we can access what <!-- l. 129 --><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>z</mi></math>
+is equal to:
+</p>   
+<table class='equation-star'><tr><td>
+<!-- l. 131 --><math class='equation' xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+                                        <mi>z</mi> <mo class='MathClass-rel'>=</mo> <mi>x</mi> <mo class='MathClass-bin'>+</mo> <mi>y</mi>
+</math></td></tr></table>
+<!-- l. 133 --><p class='indent'>   Many things are possible, including some very nice calculus.
+</p>
+                                                                                         
+                                                                                         
+<div class='obeylines-v'></div><p><span class='obeylines-h'></span></p>   
+<div class='fancyvrb' id='fancyvrb5'><a id='x1-4010r1'></a>f <span id='textcolor78'>=</span> x<span id='textcolor79'>*</span><span id='textcolor80'>*</span><span id='textcolor81'>3</span> <span id='textcolor82'>+</span> cos(x)<span id='textcolor83'>*</span><span id='textcolor84'>*</span><span id='textcolor85'>5</span><a id='x1-4012r2'></a>g <span id='textcolor86'>=</span> Integral(f, x)</div>
+<table class='equation-star'><tr><td>
+<!-- l. 140 --><math class='equation' xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+                     <mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><mfenced close=')' separators='' open='('><mrow><msup><mrow><mi>x</mi></mrow><mrow><mn>3</mn></mrow></msup> <mo class='MathClass-bin'>+</mo><msup><mrow><mi class='qopname'> cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>5</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi> <mo class='MathClass-rel'>=</mo> <mfrac><mrow><msup><mrow><mi>x</mi></mrow><mrow><mn>4</mn></mrow></msup></mrow>
+ 
+<mrow>
+<mn>4</mn></mrow></mfrac>  <mo class='MathClass-bin'>+</mo> <mfrac><mrow><msup><mrow><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>5</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mrow> 
+<mrow>
+<mn>5</mn></mrow></mfrac>    <mo class='MathClass-bin'>−</mo><mfrac><mrow><mn>2</mn><msup><mrow><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>3</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mrow> 
+<mrow>
+<mn>3</mn></mrow></mfrac>     <mo class='MathClass-bin'>+</mo><mi class='qopname'> sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced>
+</math></td></tr></table>
+<!-- l. 142 --><p class='indent'>   It’s easy to use arbitrary symbols in equations.
+</p>   
+<div class='obeylines-v'></div><p><span class='obeylines-h'></span></p>
+<div class='fancyvrb' id='fancyvrb6'><a id='x1-4016r1'></a>phi <span id='textcolor87'>=</span> Symbol(<span id='textcolor88'>r</span><span id='textcolor89'>'</span><span id='textcolor90'>\</span><span id='textcolor91'>phi</span><span id='textcolor92'>'</span>)<a id='x1-4018r2'></a>h <span id='textcolor93'>=</span> Integral(exp(<span id='textcolor94'>-</span>phi<span id='textcolor95'>*</span><span id='textcolor96'>*</span><span id='textcolor97'>2</span>), (phi, <span id='textcolor98'>0</span>, oo))</div>
+<table class='equation-star'><tr><td>
+<!-- l. 149 --><math class='equation' xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+                                    <msubsup><mrow><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --></mrow><mrow><mn>0</mn></mrow><mrow><mi>∞</mi></mrow></msubsup><msup><mrow><mi>e</mi></mrow><mrow><mo class='MathClass-bin'>−</mo><msup><mrow><mi>ϕ</mi></mrow><mrow><mn>2</mn></mrow></msup>
+       </mrow></msup><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dϕ</mi> <mo class='MathClass-rel'>=</mo> <mfrac><mrow><msqrt><mrow><mi>π</mi></mrow></msqrt>
+     </mrow> 
+<mrow>
+<mn>2</mn></mrow></mfrac>
+</math></td></tr></table>
+<!-- l. 153 --><p class='noindent'>
+</p>   
+<h3 class='sectionHead'><span class='titlemark'>5   </span> <a id='x1-50005'></a>Plots with matplotlib</h3>
+<!-- l. 155 --><p class='noindent'>We can create plots with matplotlib, perfectly matching the plot fonts with the document fonts. No more
+searching for the code that created a figure!
+                                                                                         
+                                                                                         
+</p><!-- l. 157 --><p class='indent'>   It is possible to pass page dimensions and similar contextual information from the LaTeX side to the Python
+side. If you want your figures to be, for example, a particular fraction of the page width, you can pass the value of
+<code> <span id='textcolor99'><strong>\textwidth</strong></span></code> to the Python side, and use it
+in creating your figures. See <code>  <span id='textcolor100'><strong>\setpythontexcontext</strong></span></code>
+in the main documentation for details.
+</p><!-- l. 159 --><p class='indent'>   You may want to use matplotlib’s PGF backend when creating plots.
+</p>   
+<div class='obeylines-v'></div><p><span class='obeylines-h'></span></p>
+<div class='fancyvrb' id='fancyvrb7'><a id='x1-5016r1'></a>rc(<span id='textcolor101'>'</span><span id='textcolor102'>text</span><span id='textcolor103'>'</span>, usetex<span id='textcolor104'>=</span><span id='textcolor105'><strong>True</strong></span>)<a id='x1-5018r2'></a>rc(<span id='textcolor106'>'</span><span id='textcolor107'>font</span><span id='textcolor108'>'</span>, family<span id='textcolor109'>=</span><span id='textcolor110'>'</span><span id='textcolor111'>serif</span><span id='textcolor112'>'</span>)<br class='fancyvrb' /><a id='x1-5020r3'></a>rc(<span id='textcolor113'>'</span><span id='textcolor114'>font</span><span id='textcolor115'>'</span>, size<span id='textcolor116'>=</span><span id='textcolor117'>10.0</span>)
+<br class='fancyvrb' /><a id='x1-5022r4'></a>rc(<span id='textcolor118'>'</span><span id='textcolor119'>legend</span><span id='textcolor120'>'</span>, fontsize<span id='textcolor121'>=</span><span id='textcolor122'>10.0</span>)
+<br class='fancyvrb' /><a id='x1-5024r5'></a>rc(<span id='textcolor123'>'</span><span id='textcolor124'>font</span><span id='textcolor125'>'</span>, weight<span id='textcolor126'>=</span><span id='textcolor127'>'</span><span id='textcolor128'>normal</span><span id='textcolor129'>'</span>)
+<br class='fancyvrb' /><a id='x1-5026r6'></a>x <span id='textcolor130'>=</span> linspace(<span id='textcolor131'>0</span>, <span id='textcolor132'>10</span>)
+<br class='fancyvrb' /><a id='x1-5028r7'></a>figure(figsize<span id='textcolor133'>=</span>(<span id='textcolor134'>4</span>, <span id='textcolor135'>2.5</span>))
+<br class='fancyvrb' /><a id='x1-5030r8'></a>plot(x, sin(x), label<span id='textcolor136'>=</span><span id='textcolor137'>'</span><span id='textcolor138'>$</span><span id='textcolor139'>\</span><span id='textcolor140'>sin(x)$</span><span id='textcolor141'>'</span>)
+<br class='fancyvrb' /><a id='x1-5032r9'></a>xlabel(<span id='textcolor142'>r</span><span id='textcolor143'>'</span><span id='textcolor144'>$x</span><span id='textcolor145'>\</span><span id='textcolor146'>mathrm</span><span id='textcolor147'>{</span><span id='textcolor148'>-axis}$</span><span id='textcolor149'>'</span>)
+<br class='fancyvrb' /><a id='x1-5034r10'></a>ylabel(<span id='textcolor150'>r</span><span id='textcolor151'>'</span><span id='textcolor152'>$y</span><span id='textcolor153'>\</span><span id='textcolor154'>mathrm</span><span id='textcolor155'>{</span><span id='textcolor156'>-axis}$</span><span id='textcolor157'>'</span>)
+<br class='fancyvrb' /><a id='x1-5036r11'></a>legend(loc<span id='textcolor158'>=</span><span id='textcolor159'>'</span><span id='textcolor160'>lower right</span><span id='textcolor161'>'</span>)
+<br class='fancyvrb' /><a id='x1-5038r12'></a>savefig(<span id='textcolor162'>'</span><span id='textcolor163'>myplot.pdf</span><span id='textcolor164'>'</span>, bbox_inches<span id='textcolor165'>=</span><span id='textcolor166'>'</span><span id='textcolor167'>tight</span><span id='textcolor168'>'</span>)
+</div>
+<div class='center'>
+<!-- l. 176 --><p class='noindent'>
+</p><!-- l. 177 --><p class='noindent'> <img alt='PIC' height='185' src='myplot-.png' width='282' /></p></div>
+<!-- l. 181 --><p class='noindent'>
+</p>   
+<h3 class='sectionHead'><span class='titlemark'>6   </span> <a id='x1-60006'></a>Basic pylab interaction</h3>
+<div class='obeylines-v'></div><p><span class='obeylines-h'></span></p>   
+<div class='fancyvrb' id='fancyvrb8'><a id='x1-6004r1'></a><span id='textcolor169'><strong>from</strong></span> <span id='textcolor170'><strong>scipy</strong></span><span id='textcolor171'><strong>.</strong></span><span id='textcolor172'><strong>integrate</strong></span> <span id='textcolor173'><strong>import</strong></span> quad<a id='x1-6006r2'></a>myintegral <span id='textcolor174'>=</span> quad(<span id='textcolor175'><strong>lambda</strong></span> x: e<span id='textcolor176'>*</span><span id='textcolor177'>*</span><span id='textcolor178'>-</span>x<span id='textcolor179'>*</span><span id='textcolor180'>*</span><span id='textcolor181'>2</span>, <span id='textcolor182'>0</span>, inf)[<span id='textcolor183'>0</span>]</div>
+<table class='equation-star'><tr><td>
+<!-- l. 188 --><math class='equation' xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+                               <msubsup><mrow><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --></mrow><mrow><mn>0</mn></mrow><mrow><mi>∞</mi></mrow></msubsup><msup><mrow><mi>e</mi></mrow><mrow><mo class='MathClass-bin'>−</mo><msup><mrow><mi>x</mi></mrow><mrow><mn>2</mn></mrow></msup>
+      </mrow></msup><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi> <mo class='MathClass-rel'>=</mo> <mn>0</mn><mo class='MathClass-punc'>.</mo><mn>886226925453</mn>
+</math></td></tr></table>
+                                                                                         
+                                                                                         
+<!-- l. 191 --><p class='noindent'>
+</p>   
+<h3 class='sectionHead'><span class='titlemark'>7   </span> <a id='x1-70007'></a>An automated derivative and integral table</h3>
+<!-- l. 193 --><p class='noindent'>PythonTeX allows some amazing document automation, such as this derivative and integral table. Try
+typing that by hand, fast!
+</p>   
+<div class='obeylines-v'></div><p><span class='obeylines-h'></span></p>
+   
+<div class='fancyvrb' id='fancyvrb9'><a id='x1-7025r1'></a>1<span id='textcolor184'><strong>from</strong></span> <span id='textcolor185'><strong>re</strong></span> <span id='textcolor186'><strong>import</strong></span> sub<a id='x1-7027r2'></a> 2<br class='fancyvrb' /><a id='x1-7029r3'></a>3var(<span id='textcolor187'>'</span><span id='textcolor188'>x</span><span id='textcolor189'>'</span>)<br class='fancyvrb' /><a id='x1-7031r4'></a>4<br class='fancyvrb' /><a id='x1-7033r5'></a>5<span id='textcolor190'><i># Create a list of functions to include in the table</i></span>
+<br class='fancyvrb' /><a id='x1-7035r6'></a>6funcs <span id='textcolor191'>=</span> [<span id='textcolor192'>'</span><span id='textcolor193'>sin(x)</span><span id='textcolor194'>'</span>, <span id='textcolor195'>'</span><span id='textcolor196'>cos(x)</span><span id='textcolor197'>'</span>, <span id='textcolor198'>'</span><span id='textcolor199'>tan(x)</span><span id='textcolor200'>'</span>,
+<br class='fancyvrb' /><a id='x1-7037r7'></a>7         <span id='textcolor201'>'</span><span id='textcolor202'>sin(x)**2</span><span id='textcolor203'>'</span>, <span id='textcolor204'>'</span><span id='textcolor205'>cos(x)**2</span><span id='textcolor206'>'</span>, <span id='textcolor207'>'</span><span id='textcolor208'>tan(x)**2</span><span id='textcolor209'>'</span>,
+<br class='fancyvrb' /><a id='x1-7039r8'></a>8         <span id='textcolor210'>'</span><span id='textcolor211'>asin(x)</span><span id='textcolor212'>'</span>, <span id='textcolor213'>'</span><span id='textcolor214'>acos(x)</span><span id='textcolor215'>'</span>, <span id='textcolor216'>'</span><span id='textcolor217'>atan(x)</span><span id='textcolor218'>'</span>,
+<br class='fancyvrb' /><a id='x1-7041r9'></a>9         <span id='textcolor219'>'</span><span id='textcolor220'>sinh(x)</span><span id='textcolor221'>'</span>, <span id='textcolor222'>'</span><span id='textcolor223'>cosh(x)</span><span id='textcolor224'>'</span>, <span id='textcolor225'>'</span><span id='textcolor226'>tanh(x)</span><span id='textcolor227'>'</span>]
+<br class='fancyvrb' /><a id='x1-7043r10'></a>10
+<br class='fancyvrb' /><a id='x1-7045r11'></a>11<span id='textcolor228'>print</span>(<span id='textcolor229'>r</span><span id='textcolor230'>'</span><span id='textcolor231'>\</span><span id='textcolor232'>begin</span><span id='textcolor233'>{</span><span id='textcolor234'>align*}</span><span id='textcolor235'>'</span>)
+<br class='fancyvrb' /><a id='x1-7047r12'></a>12
+<br class='fancyvrb' /><a id='x1-7049r13'></a>13<span id='textcolor236'><strong>for</strong></span> func <span id='textcolor237'><strong>in</strong></span> funcs:
+<br class='fancyvrb' /><a id='x1-7051r14'></a>14    <span id='textcolor238'><i># Put in some vertical space when switching to arc and hyperbolic funcs</i></span>
+<br class='fancyvrb' /><a id='x1-7053r15'></a>15    <span id='textcolor239'><strong>if</strong></span> func <span id='textcolor240'>==</span> <span id='textcolor241'>'</span><span id='textcolor242'>asin(x)</span><span id='textcolor243'>'</span> <span id='textcolor244'><strong>or</strong></span> func <span id='textcolor245'>==</span> <span id='textcolor246'>'</span><span id='textcolor247'>sinh(x)</span><span id='textcolor248'>'</span>:
+<br class='fancyvrb' /><a id='x1-7055r16'></a>16        <span id='textcolor249'>print</span>(<span id='textcolor250'>r</span><span id='textcolor251'>'</span><span id='textcolor252'>&amp;</span><span id='textcolor253'><strong>\\</strong></span><span id='textcolor254'>'</span>)
+<br class='fancyvrb' /><a id='x1-7057r17'></a>17    myderiv <span id='textcolor255'>=</span> <span id='textcolor256'>'</span><span id='textcolor257'>Derivative(</span><span id='textcolor258'>'</span> <span id='textcolor259'>+</span> func <span id='textcolor260'>+</span> <span id='textcolor261'>'</span><span id='textcolor262'>, x)</span><span id='textcolor263'>'</span>
+<br class='fancyvrb' /><a id='x1-7059r18'></a>18    myint <span id='textcolor264'>=</span> <span id='textcolor265'>'</span><span id='textcolor266'>Integral(</span><span id='textcolor267'>'</span> <span id='textcolor268'>+</span> func <span id='textcolor269'>+</span> <span id='textcolor270'>'</span><span id='textcolor271'>, x)</span><span id='textcolor272'>'</span>
+<br class='fancyvrb' /><a id='x1-7061r19'></a>19    <span id='textcolor273'>print</span>(latex(<span id='textcolor274'>eval</span>(myderiv)) <span id='textcolor275'>+</span> <span id='textcolor276'>'</span><span id='textcolor277'>&amp;=</span><span id='textcolor278'>'</span> <span id='textcolor279'>+</span>
+<br class='fancyvrb' /><a id='x1-7063r20'></a>20            latex(<span id='textcolor280'>eval</span>(myderiv <span id='textcolor281'>+</span> <span id='textcolor282'>'</span><span id='textcolor283'>.doit()</span><span id='textcolor284'>'</span>)) <span id='textcolor285'>+</span> <span id='textcolor286'>r</span><span id='textcolor287'>'</span><span id='textcolor288'>\</span><span id='textcolor289'>quad &amp; </span><span id='textcolor290'>\</span><span id='textcolor291'>quad</span><span id='textcolor292'>'</span>)
+<br class='fancyvrb' /><a id='x1-7065r21'></a>21    <span id='textcolor293'>print</span>(latex(<span id='textcolor294'>eval</span>(myint)) <span id='textcolor295'>+</span> <span id='textcolor296'>'</span><span id='textcolor297'>&amp;=</span><span id='textcolor298'>'</span> <span id='textcolor299'>+</span>
+<br class='fancyvrb' /><a id='x1-7067r22'></a>22            latex(<span id='textcolor300'>eval</span>(myint<span id='textcolor301'>+</span><span id='textcolor302'>'</span><span id='textcolor303'>.doit()</span><span id='textcolor304'>'</span>)) <span id='textcolor305'>+</span> <span id='textcolor306'>r</span><span id='textcolor307'>'</span><span id='textcolor308'><strong>\\</strong></span><span id='textcolor309'>'</span>)
+<br class='fancyvrb' /><a id='x1-7069r23'></a>23<span id='textcolor310'>print</span>(<span id='textcolor311'>r</span><span id='textcolor312'>'</span><span id='textcolor313'>\</span><span id='textcolor314'>end</span><span id='textcolor315'>{</span><span id='textcolor316'>align*}</span><span id='textcolor317'>'</span>)
+</div>
+<!-- l. 1 --><p class='indent'>
+                                                                                         
+                                                                                         
+</p><!-- tex4ht:inline --><!-- l. 28 --><math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mtable columnalign='left' class='align-star'>
+     <mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo><mi class='qopname'> cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mo class='MathClass-bin'>−</mo><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mo class='MathClass-bin'>−</mo><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo><mi class='qopname'> sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><mi class='qopname'>tan</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo><msup><mrow><mi class='qopname'> tan</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>2</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced> <mo class='MathClass-bin'>+</mo> <mn>1</mn><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><mi class='qopname'>tan</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mo class='MathClass-bin'>−</mo><mi class='qopname'>log</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mrow></mfenced><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><msup><mrow><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>2</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mn>2</mn><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><msup><mrow><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>2</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mfrac><mrow><mi>x</mi></mrow> 
+<mrow>
+<mn>2</mn></mrow></mfrac> <mo class='MathClass-bin'>−</mo><mfrac><mrow><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mrow> 
+<mrow>
+<mn>2</mn></mrow></mfrac>       <mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><msup><mrow><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>2</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mo class='MathClass-bin'>−</mo><mn>2</mn><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><msup><mrow><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>2</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mfrac><mrow><mi>x</mi></mrow> 
+<mrow>
+<mn>2</mn></mrow></mfrac> <mo class='MathClass-bin'>+</mo> <mfrac><mrow><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mrow> 
+<mrow>
+<mn>2</mn></mrow></mfrac>       <mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><msup><mrow><mi class='qopname'>tan</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>2</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mfenced close=')' separators='' open='('><mrow><mn>2</mn><msup><mrow><mi class='qopname'>tan</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>2</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced> <mo class='MathClass-bin'>+</mo> <mn>2</mn></mrow></mfenced><mi class='qopname'>tan</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><msup><mrow><mi class='qopname'>tan</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>2</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mo class='MathClass-bin'>−</mo><mi>x</mi> <mo class='MathClass-bin'>+</mo> <mfrac><mrow><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mrow> 
+<mrow>
+<mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mrow></mfrac><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'></mtd>
+                   <mtd class='align-even'><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'></mtd>
+                                                           <mtd class='align-even'><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><mi class='qopname'>asin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo>       <mfrac><mrow><mn>1</mn></mrow> 
+<mrow>
+<msqrt>
+<mrow>
+<mo class='MathClass-bin'>−</mo><msup><mrow><mi>x</mi></mrow><mrow><mn>2</mn></mrow></msup> <mo class='MathClass-bin'>+</mo> <mn>1</mn></mrow></msqrt></mrow></mfrac><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><mi class='qopname'>asin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mi>x</mi><mi class='qopname'>asin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced> <mo class='MathClass-bin'>+</mo> <msqrt><mrow>
+<mo class='MathClass-bin'>−</mo><msup><mrow><mi>x</mi></mrow><mrow><mn>2</mn></mrow></msup> <mo class='MathClass-bin'>+</mo> <mn>1</mn></mrow></msqrt><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><mi class='qopname'>acos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mo class='MathClass-bin'>−</mo>   <mfrac><mrow><mn>1</mn></mrow>
+<mrow>
+<msqrt>
+<mrow>
+<mo class='MathClass-bin'>−</mo><msup><mrow><mi>x</mi></mrow><mrow><mn>2</mn></mrow></msup> <mo class='MathClass-bin'>+</mo> <mn>1</mn></mrow></msqrt></mrow></mfrac><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><mi class='qopname'>acos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mi>x</mi><mi class='qopname'>acos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced> <mo class='MathClass-bin'>−</mo><msqrt><mrow>
+<mo class='MathClass-bin'>−</mo><msup><mrow><mi>x</mi></mrow><mrow><mn>2</mn></mrow></msup> <mo class='MathClass-bin'>+</mo> <mn>1</mn></mrow></msqrt><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><mi class='qopname'>atan</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo>     <mfrac><mrow><mn>1</mn></mrow> 
+<mrow><msup><mrow>
+<mi>x</mi></mrow><mrow><mn>2</mn></mrow></msup> <mo class='MathClass-bin'>+</mo> <mn>1</mn></mrow></mfrac><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><mi class='qopname'>atan</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mi>x</mi><mi class='qopname'>atan</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced> <mo class='MathClass-bin'>−</mo><mfrac><mrow><mi class='qopname'>log</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><msup><mrow><mi>x</mi></mrow><mrow><mn>2</mn></mrow></msup> <mo class='MathClass-bin'>+</mo> <mn>1</mn></mrow></mfenced></mrow> 
+<mrow>
+<mn>2</mn></mrow></mfrac>      <mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'></mtd>
+                   <mtd class='align-even'><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'></mtd>
+                                                           <mtd class='align-even'><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><mi class='qopname'>sinh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo><mi class='qopname'> cosh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><mi class='qopname'>sinh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo><mi class='qopname'> cosh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><mi class='qopname'>cosh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo><mi class='qopname'> sinh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><mi class='qopname'>cosh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo><mi class='qopname'> sinh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'> <mfrac><mrow><mi>d</mi></mrow>
+<mrow>
+<mi mathvariant='italic'>dx</mi></mrow></mfrac><mi class='qopname'>tanh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced></mtd>
+                   <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mo class='MathClass-bin'>−</mo><msup><mrow><mi class='qopname'>tanh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --></mrow><mrow><mn>2</mn></mrow></msup><mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced> <mo class='MathClass-bin'>+</mo> <mn>1</mn><mspace class='quad' width='1em'></mspace><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'><mspace class='quad' width='1em'></mspace><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --><mi class='qopname'>tanh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi></mtd>
+                                                           <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mi>x</mi> <mo class='MathClass-bin'>−</mo><mi class='qopname'> log</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi class='qopname'>tanh</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced> <mo class='MathClass-bin'>+</mo> <mn>1</mn></mrow></mfenced><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'></mtd>
+                                                                                            <mtd class='align-label'><mspace width='2em'></mspace></mtd>
+                                                                                                <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+     <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'></mtd>
+                   <mtd class='align-even'><mspace width='2em'></mspace></mtd>
+                                           <mtd columnalign='right' class='align-odd'></mtd>
+                                                           <mtd class='align-even'><mspace width='2em'></mspace></mtd>
+                                                                                       <mtd columnalign='right' class='align-label'>
+   </mtd></mtr></mtable></math>
+<!-- l. 224 --><p class='noindent'>
+</p>   
+<h3 class='sectionHead'><span class='titlemark'>8   </span> <a id='x1-80008'></a>Step-by-step solutions</h3>
+<!-- l. 226 --><p class='noindent'>Using SymPy, it is possible to typeset step-by-step solutions. In this particular case, we also use the
+<span class='obeylines-h'><span class='verb'><span class='ec-lmtt-10x-x-109'>mdframed</span></span></span> package to place a colored background behind our code.</p>
+<div class='mdframed' id='mdframed-1'>
+<!-- l. 228 --><p class='noindent'>
+</p><!-- l. 228 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Step-by-Step Integral Evaluation</span></p>
+                                                                                         
+                                                                                         
+<div class='obeylines-v'></div><span class='obeylines-h'></span>
+<div class='fancyvrb' id='fancyvrb10'><a id='x1-8038r1'></a>1x, y, z <span id='textcolor318'>=</span> symbols(<span id='textcolor319'>'</span><span id='textcolor320'>x,y,z</span><span id='textcolor321'>'</span>)<a id='x1-8040r2'></a>2f <span id='textcolor322'>=</span> Symbol(<span id='textcolor323'>'</span><span id='textcolor324'>f(x,y,z)</span><span id='textcolor325'>'</span>)<br class='fancyvrb' /><a id='x1-8042r3'></a>3<br class='fancyvrb' /><a id='x1-8044r4'></a>4<span id='textcolor326'><i># Define limits of integration</i></span>
+<br class='fancyvrb' /><a id='x1-8046r5'></a>5x_llim <span id='textcolor327'>=</span> <span id='textcolor328'>0</span>
+<br class='fancyvrb' /><a id='x1-8048r6'></a>6x_ulim <span id='textcolor329'>=</span> <span id='textcolor330'>2</span>
+<br class='fancyvrb' /><a id='x1-8050r7'></a>7y_llim <span id='textcolor331'>=</span> <span id='textcolor332'>0</span>
+<br class='fancyvrb' /><a id='x1-8052r8'></a>8y_ulim <span id='textcolor333'>=</span> <span id='textcolor334'>3</span>
+<br class='fancyvrb' /><a id='x1-8054r9'></a>9z_llim <span id='textcolor335'>=</span> <span id='textcolor336'>0</span>
+<br class='fancyvrb' /><a id='x1-8056r10'></a>10z_ulim <span id='textcolor337'>=</span> <span id='textcolor338'>4</span>
+<br class='fancyvrb' /><a id='x1-8058r11'></a>11
+<br class='fancyvrb' /><a id='x1-8060r12'></a>12<span id='textcolor339'>print</span>(<span id='textcolor340'>r</span><span id='textcolor341'>'</span><span id='textcolor342'>\</span><span id='textcolor343'>begin</span><span id='textcolor344'>{</span><span id='textcolor345'>align*}</span><span id='textcolor346'>'</span>)
+<br class='fancyvrb' /><a id='x1-8062r13'></a>13
+<br class='fancyvrb' /><a id='x1-8064r14'></a>14<span id='textcolor347'><i># Notice how I define f as a symbol, then later as an actual function</i></span>
+<br class='fancyvrb' /><a id='x1-8066r15'></a>15left <span id='textcolor348'>=</span> Integral(f, (x, x_llim, x_ulim), (y, y_llim, y_ulim), (z, z_llim, z_ulim))
+<br class='fancyvrb' /><a id='x1-8068r16'></a>16f <span id='textcolor349'>=</span> x<span id='textcolor350'>*</span>y <span id='textcolor351'>+</span> y<span id='textcolor352'>*</span>sin(z) <span id='textcolor353'>+</span> cos(x<span id='textcolor354'>+</span>y)
+<br class='fancyvrb' /><a id='x1-8070r17'></a>17right <span id='textcolor355'>=</span> Integral(f, (x, x_llim, x_ulim), (y, y_llim, y_ulim), (z, z_llim, z_ulim))
+<br class='fancyvrb' /><a id='x1-8072r18'></a>18<span id='textcolor356'>print</span>(latex(left) <span id='textcolor357'>+</span> <span id='textcolor358'>'</span><span id='textcolor359'>&amp;=</span><span id='textcolor360'>'</span> <span id='textcolor361'>+</span> latex(right) <span id='textcolor362'>+</span> <span id='textcolor363'>r</span><span id='textcolor364'>'</span><span id='textcolor365'><strong>\\</strong></span><span id='textcolor366'>'</span>)
+<br class='fancyvrb' /><a id='x1-8074r19'></a>19
+<br class='fancyvrb' /><a id='x1-8076r20'></a>20<span id='textcolor367'><i># For each step, I move limits from an outer integral to an inner, evaluated</i></span>
+<br class='fancyvrb' /><a id='x1-8078r21'></a>21<span id='textcolor368'><i># integral until the outer integral is no longer needed</i></span>
+<br class='fancyvrb' /><a id='x1-8080r22'></a>22right <span id='textcolor369'>=</span> Integral(Integral(f, (z, z_llim, z_ulim))<span id='textcolor370'>.</span>doit(), (x, x_llim, x_ulim),
+<br class='fancyvrb' /><a id='x1-8082r23'></a>23                 (y, y_llim, y_ulim))
+<br class='fancyvrb' /><a id='x1-8084r24'></a>24<span id='textcolor371'>print</span>(<span id='textcolor372'>'</span><span id='textcolor373'>&amp;=</span><span id='textcolor374'>'</span> <span id='textcolor375'>+</span> latex(right) <span id='textcolor376'>+</span> <span id='textcolor377'>r</span><span id='textcolor378'>'</span><span id='textcolor379'><strong>\\</strong></span><span id='textcolor380'>'</span>)
+<br class='fancyvrb' /><a id='x1-8086r25'></a>25
+<br class='fancyvrb' /><a id='x1-8088r26'></a>26right <span id='textcolor381'>=</span> Integral(Integral(f, (z, z_llim, z_ulim), (y, y_llim, y_ulim))<span id='textcolor382'>.</span>doit(),
+<br class='fancyvrb' /><a id='x1-8090r27'></a>27                 (x, x_llim, x_ulim))
+<br class='fancyvrb' /><a id='x1-8092r28'></a>28<span id='textcolor383'>print</span>(<span id='textcolor384'>'</span><span id='textcolor385'>&amp;=</span><span id='textcolor386'>'</span> <span id='textcolor387'>+</span> latex(right) <span id='textcolor388'>+</span> <span id='textcolor389'>r</span><span id='textcolor390'>'</span><span id='textcolor391'><strong>\\</strong></span><span id='textcolor392'>'</span>)
+<br class='fancyvrb' /><a id='x1-8094r29'></a>29
+<br class='fancyvrb' /><a id='x1-8096r30'></a>30right <span id='textcolor393'>=</span> Integral(f, (z, z_llim, z_ulim), (y, y_llim, y_ulim),
+<br class='fancyvrb' /><a id='x1-8098r31'></a>31                 (x, x_llim, x_ulim))<span id='textcolor394'>.</span>doit()
+<br class='fancyvrb' /><a id='x1-8100r32'></a>32<span id='textcolor395'>print</span>(<span id='textcolor396'>'</span><span id='textcolor397'>&amp;=</span><span id='textcolor398'>'</span> <span id='textcolor399'>+</span> latex(right) <span id='textcolor400'>+</span> <span id='textcolor401'>r</span><span id='textcolor402'>'</span><span id='textcolor403'><strong>\\</strong></span><span id='textcolor404'>'</span>)
+<br class='fancyvrb' /><a id='x1-8102r33'></a>33
+<br class='fancyvrb' /><a id='x1-8104r34'></a>34<span id='textcolor405'>print</span>(<span id='textcolor406'>'</span><span id='textcolor407'>&amp;=</span><span id='textcolor408'>'</span> <span id='textcolor409'>+</span> latex(N(right)) <span id='textcolor410'>+</span> <span id='textcolor411'>r</span><span id='textcolor412'>'</span><span id='textcolor413'><strong>\\</strong></span><span id='textcolor414'>'</span>)
+<br class='fancyvrb' /><a id='x1-8106r35'></a>35
+<br class='fancyvrb' /><a id='x1-8108r36'></a>36<span id='textcolor415'>print</span>(<span id='textcolor416'>r</span><span id='textcolor417'>'</span><span id='textcolor418'>\</span><span id='textcolor419'>end</span><span id='textcolor420'>{</span><span id='textcolor421'>align*}</span><span id='textcolor422'>'</span>)
+</div>
+<!-- l. 267 --><p class='noindent'></p>   
+</div>
+<!-- l. 1 --><p class='indent'>
+</p><!-- tex4ht:inline --><!-- l. 7 --><math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mtable columnalign='left' class='align-star'>
+      <mtr><mtd columnalign='right' class='align-odd'><msubsup><mrow><mo>∫
+ <!-- nolimits --></mo><!-- nolimits --></mrow><mrow><mn>0</mn></mrow><mrow><mn>4</mn></mrow></msubsup><msubsup><mrow><mo> ∫
+ <!-- nolimits --></mo><!-- nolimits --></mrow><mrow><mn>0</mn></mrow><mrow><mn>3</mn></mrow></msubsup><msubsup><mrow><mo> ∫
+ <!-- nolimits --></mo><!-- nolimits --></mrow><mrow><mn>0</mn></mrow><mrow><mn>2</mn></mrow></msubsup><mi>f</mi><mrow><mo class='MathClass-open'>(</mo><mrow><mi>x</mi><mo class='MathClass-punc'>,</mo><mi>y</mi><mo class='MathClass-punc'>,</mo><mi>z</mi></mrow><mo class='MathClass-close'>)</mo></mrow><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dy</mi><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dz</mi></mtd>
+                                         <mtd class='align-even'> <mo class='MathClass-rel'>=</mo><msubsup><mrow><mo> ∫
+ <!-- nolimits --></mo><!-- nolimits --></mrow><mrow><mn>0</mn></mrow><mrow><mn>4</mn></mrow></msubsup><msubsup><mrow><mo> ∫
+ <!-- nolimits --></mo><!-- nolimits --></mrow><mrow><mn>0</mn></mrow><mrow><mn>3</mn></mrow></msubsup><msubsup><mrow><mo> ∫
+ <!-- nolimits --></mo><!-- nolimits --></mrow><mrow><mn>0</mn></mrow><mrow><mn>2</mn></mrow></msubsup> <mfenced close=')' separators='' open='('><mrow><mi mathvariant='italic'>xy</mi> <mo class='MathClass-bin'>+</mo> <mi>y</mi><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>z</mi></mrow></mfenced> <mo class='MathClass-bin'>+</mo><mi class='qopname'> cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi> <mo class='MathClass-bin'>+</mo> <mi>y</mi></mrow></mfenced></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dy</mi><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dz</mi><mspace width='2em'></mspace></mtd>
+                                                                                               <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+      <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'></mtd>
+                                         <mtd class='align-even'> <mo class='MathClass-rel'>=</mo><msubsup><mrow><mo> ∫
+ <!-- nolimits --></mo><!-- nolimits --></mrow><mrow><mn>0</mn></mrow><mrow><mn>3</mn></mrow></msubsup><msubsup><mrow><mo> ∫
+ <!-- nolimits --></mo><!-- nolimits --></mrow><mrow><mn>0</mn></mrow><mrow><mn>2</mn></mrow></msubsup> <mfenced close=')' separators='' open='('><mrow><mn>4</mn><mi mathvariant='italic'>xy</mi> <mo class='MathClass-bin'>−</mo> <mi>y</mi><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mn>4</mn></mrow></mfenced> <mo class='MathClass-bin'>+</mo> <mi>y</mi> <mo class='MathClass-bin'>+</mo> <mn>4</mn><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi> <mo class='MathClass-bin'>+</mo> <mi>y</mi></mrow></mfenced></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dy</mi><mspace width='2em'></mspace></mtd>
+                                                                                               <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+      <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'></mtd>
+                                         <mtd class='align-even'> <mo class='MathClass-rel'>=</mo><msubsup><mrow><mo> ∫
+ <!-- nolimits --></mo><!-- nolimits --></mrow><mrow><mn>0</mn></mrow><mrow><mn>2</mn></mrow></msubsup> <mfenced close=')' separators='' open='('><mrow><mn>18</mn><mi>x</mi> <mo class='MathClass-bin'>−</mo> <mn>4</mn><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi></mrow></mfenced> <mo class='MathClass-bin'>+</mo> <mn>4</mn><mi class='qopname'>sin</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mi>x</mi> <mo class='MathClass-bin'>+</mo> <mn>3</mn></mrow></mfenced> <mo class='MathClass-bin'>−</mo><mfrac><mrow><mn>9</mn><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mn>4</mn></mrow></mfenced></mrow> 
+<mrow>
+<mn>2</mn></mrow></mfrac>     <mo class='MathClass-bin'>+</mo> <mfrac><mrow><mn>9</mn></mrow> 
+<mrow>
+<mn>2</mn></mrow></mfrac></mrow></mfenced><mspace class='thinspace' width='0.3em'></mspace><mi mathvariant='italic'>dx</mi><mspace width='2em'></mspace></mtd>
+                                                                                               <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+      <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'></mtd>
+                                         <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mn>4</mn><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mn>3</mn></mrow></mfenced> <mo class='MathClass-bin'>+</mo> <mn>4</mn><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mn>2</mn></mrow></mfenced> <mo class='MathClass-bin'>−</mo> <mn>4</mn><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mn>5</mn></mrow></mfenced> <mo class='MathClass-bin'>−</mo> <mn>9</mn><mi class='qopname'>cos</mi><mo> ⁡<!-- FUNCTION APPLICATION --> </mo><!-- nolimits --> <mfenced close=')' separators='' open='('><mrow><mn>4</mn></mrow></mfenced> <mo class='MathClass-bin'>+</mo> <mn>41</mn><mspace width='2em'></mspace></mtd>
+                                                                                               <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+      <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'></mtd>
+                                         <mtd class='align-even'> <mo class='MathClass-rel'>=</mo> <mn>40</mn><mo class='MathClass-punc'>.</mo><mn>1235865133293</mn><mspace width='2em'></mspace></mtd>
+                                                                                               <mtd columnalign='right' class='align-label'></mtd>
+                                                                                                     <mtd class='align-label'>
+      <mspace width='2em'></mspace></mtd></mtr><mtr><mtd columnalign='right' class='align-odd'></mtd>
+                                         <mtd class='align-even'><mspace width='2em'></mspace></mtd>
+                                                                                               <mtd columnalign='right' class='align-label'>
+   </mtd></mtr></mtable></math>
+                                                                                         
+                                                                                         
+<h3 class='sectionHead'><span class='titlemark'>9   </span> <a id='x1-90009'></a>Including stderr</h3>
+<!-- l. 274 --><p class='noindent'>PythonTeX allows code to be typset next to the stderr it produces. This requires the package option
+<span class='obeylines-h'><span class='verb'><span class='ec-lmtt-10x-x-109'>makestderr</span></span></span>.
+</p>   
+<div class='obeylines-v'></div><p><span class='obeylines-h'></span></p>
+<div class='fancyvrb' id='fancyvrb11'><a id='x1-9005r1'></a>1x <span id='textcolor423'>=</span> <span id='textcolor424'>123</span><a id='x1-9007r2'></a>2y <span id='textcolor425'>=</span> <span id='textcolor426'>345</span><br class='fancyvrb' /><a id='x1-9009r3'></a>3z <span id='textcolor427'>=</span> x <span id='textcolor428'>+</span> y <span id='textcolor429'>+</span></div>
+<!-- l. 282 --><p class='indent'>   This code causes a syntax error:
+</p><!-- l. 284 --><p class='indent'>
+</p>   
+<div class='fancyvrb' id='fancyvrb12'>
+<a id='x1-9011r1'></a>  File "py_errorsession_9.py", line 3
+<a id='x1-9013r2'></a>    z = x + y +
+<br class='fancyvrb' /><a id='x1-9015r3'></a>              ^
+<br class='fancyvrb' /><a id='x1-9017r4'></a>SyntaxError: invalid syntax
+</div>
+<!-- l. 286 --><p class='indent'>   The package option <span class='obeylines-h'><span class='verb'><span class='ec-lmtt-10x-x-109'>stderrfilename</span></span></span> allows the file name that appears in the error message to be
+customized.
+</p>   
+<div class='footnotes'><!-- l. 53 --><p class='indent'>    <span class='footnote-mark'><a id='fn1x0' href='#fn1x0-bk'><sup class='textsuperscript'>∗</sup></a></span><span class='rm-lmr-9'>Since  PythonTeX runs  Python  code  (and  potentially  other  code)  on  your  computer,  documents  using
+</span><span class='rm-lmr-9'>PythonTeX have a greater potential for security risks than do standard LaTeX documents. You should only compile
+</span><span class='rm-lmr-9'>PythonTeX documents from sources you trust.</span></p>                                                                                          </div>
+ 
+</body> 
+</html>
